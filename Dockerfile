@@ -26,9 +26,13 @@ RUN { mysqld_safe & sleep 10 && mysql -uroot -ppassword -e 'ALTER USER "root"@"l
 # Set higher maximum watchers for hot reloads
 RUN echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p ; exit 0
 
+# Install Haraka for emailing
+RUN npm install -g Haraka
+
 # Copy over start script and mysql config
 COPY start.sh /start.sh
 COPY my.cnf /etc/mysql
+COPY haraka/ /var/haraka
 
 # Expose Port 3000 for webapp
 EXPOSE 3000/tcp 3306/tcp
