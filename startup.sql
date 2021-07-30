@@ -10,6 +10,7 @@ SOURCE material_calendar.sql;
 /* Inserting minimal needed data for app to startup. */
 INSERT INTO user
 SET user_id = 'mph354',
+    password = AES_ENCRYPT('password', UNHEX(SHA2('{passphrase}', 512))),
     first_name = 'michael',
     last_name = 'hagen',
     email = 'mph354@nyu.edu';
