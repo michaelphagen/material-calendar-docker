@@ -23,16 +23,17 @@ RUN mkdir -p /var/www/nodejs && cd /var/www/nodejs && git clone https://github.c
 # Set up mysql database
 RUN { mysqld_safe & sleep 10 && mysql -uroot -ppassword -e 'ALTER USER "root"@"localhost" IDENTIFIED WITH mysql_native_password BY "password"' && mysql -uroot -ppassword -e 'UPDATE mysql.user SET host="%" WHERE user="root" AND host="localhost"' && mysql -uroot -ppassword -e 'FLUSH PRIVILEGES' && pkill mysqld; } ; exit 0
 
-# Copy over database startup stuff
-COPY startup.sql /var/sql/
-COPY material_calendar.sql /var/sql
+# Copy over .env file for backend
+COPY backend.env /var/www/nodejs/material-calendar-api/.env
 
-# Change Working Directory to /var/sql
-WORKDIR /var/sql
+# Change working directory to api for database setup
+WORKDIR /var/www/nodejs/material-calendar-api/
+
+# Install Backend Dependencies for Database setup
+RUN yarn
 
 # Set up mysql database
-RUN { mysqld_safe & sleep 10 && mysql -uroot -ppassword < /var/sql/startup.sql && pkill mysqld; } ; exit 0
-
+RUN { mysqld_safe & sleep 10 && node /var/www/nodejs/material-calendar-api/startup.mjs && pkill mysqld; }
 
 # Set higher maximum watchers for hot reloads
 RUN echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p ; exit 0
