@@ -1,4 +1,4 @@
-From node:latest
+From node:16-bullseye
 
 # Install Prerecs
 RUN apt update && apt install dirmngr lsb-release yarn python -y
