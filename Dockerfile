@@ -1,7 +1,7 @@
 From node:latest
 
 # Install Prerecs
-RUN apt update && apt install dirmngr lsb-release yarn -y
+RUN apt update && apt install dirmngr lsb-release yarn python -y
 
 # Add mysql repo for this distro
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5072E1F5
@@ -39,6 +39,7 @@ RUN { mysqld_safe & sleep 10 && node /var/www/nodejs/material-calendar-api/start
 RUN echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p ; exit 0
 
 # Install Haraka for emailing
+RUN npm install -g npm
 RUN npm install -g Haraka
 
 # Copy over start script and mysql config
