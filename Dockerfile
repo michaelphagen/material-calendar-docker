@@ -4,7 +4,7 @@ From node:16-bullseye
 RUN apt update && apt install dirmngr lsb-release yarn python -y
 
 # Add mysql repo for this distro
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5072E1F5
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 467B942D3A79BD29
 RUN echo "deb http://repo.mysql.com/apt/debian $(lsb_release -sc) mysql-8.0" | \
 	tee /etc/apt/sources.list.d/mysql80.list
 RUN apt update
