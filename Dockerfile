@@ -15,7 +15,7 @@ RUN echo "mysql-community-server mysql-community-server/re-root-pass password pa
 RUN echo "mysql-community-server mysql-server/default-auth-override select Use Legacy Authentication Method (Retain MySQL 5.x Compatibility)" | debconf-set-selections
 
 # Install mysql-server non-interactive
-RUN DEBIAN_FRONTEND=noninteractive apt install -y mysql-server
+RUN DEBIAN_FRONTEND=noninteractive apt install -y default-mysql-server
 
 # Pre Clone in repos
 RUN mkdir -p /var/www/nodejs && cd /var/www/nodejs && git clone https://github.com/dwmorrin/material-calendar.git && git clone https://github.com/dwmorrin/material-calendar-api
