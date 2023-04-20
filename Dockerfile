@@ -21,7 +21,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y default-mysql-server
 RUN mkdir -p /var/www/nodejs && cd /var/www/nodejs && git clone https://github.com/dwmorrin/material-calendar.git && git clone https://github.com/dwmorrin/material-calendar-api
 
 # Set up mysql database
-RUN { mysqld_safe & sleep 10 && mysql -uroot -ppassword -e 'ALTER USER "root"@"localhost" IDENTIFIED WITH mysql_native_password BY "password"' && mysql -uroot -ppassword -e 'UPDATE mysql.user SET host="%" WHERE user="root" AND host="localhost"' && mysql -uroot -ppassword -e 'FLUSH PRIVILEGES' && pkill mysqld; } ; exit 0
+RUN { mysqld_safe & sleep 10 && mysql -uroot -ppassword -e 'ALTER USER "root"@"localhost" IDENTIFIED VIA mysql_native_password BY "password"' && mysql -uroot -ppassword -e 'UPDATE mysql.user SET host="%" WHERE user="root" AND host="localhost"' && mysql -uroot -ppassword -e 'FLUSH PRIVILEGES' && pkill mysqld; } ; exit 0
 
 # Copy over .env file for backend
 COPY backend.env /var/www/nodejs/material-calendar-api/.env
