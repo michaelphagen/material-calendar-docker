@@ -4,7 +4,7 @@ From node:16-bullseye
 RUN apt update && apt install dirmngr lsb-release yarn python -y
 
 # Populate debconf-set-selections with required answers to make mysql install non-interactive
-RUN echo "mariadb-server mariadb-serverroot-pass password password" | debconf-set-selections
+RUN echo "mariadb-server mariadb-server/root-pass password password" | debconf-set-selections
 RUN echo "mariadb-server mariadb-server/re-root-pass password password" | debconf-set-selections
 RUN echo "mariadb-server mariadb-server/default-auth-override select Use Legacy Authentication Method (Retain MySQL 5.x Compatibility)" | debconf-set-selections
 
@@ -18,7 +18,6 @@ RUN mkdir -p /var/www/nodejs && cd /var/www/nodejs && git clone https://github.c
 RUN { mysqld_safe & sleep 10 && mysql -uroot -ppassword -e 'ALTER USER "root"@"localhost" IDENTIFIED BY "password"' && pkill mysqld; }
 RUN { mysqld_safe & sleep 10 && mysql -uroot -ppassword -e 'RENAME USER "root"@"localhost" TO "root"@"%"' && pkill mysqld; }
 RUN { mysqld_safe & sleep 10 && mysql -uroot -ppassword -e 'FLUSH PRIVILEGES' && pkill mysqld; }
-RUN { mysqld_safe & sleep 10 && mysql -v && pkill mysqld; }
 # Copy over .env file for backend
 COPY backend.env /var/www/nodejs/material-calendar-api/.env
 
